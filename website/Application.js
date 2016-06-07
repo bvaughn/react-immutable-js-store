@@ -11,8 +11,8 @@ export class Application extends Component {
   static propTypes = {
     hasNext: PropTypes.bool.isRequired,
     hasPrevious: PropTypes.bool.isRequired,
-    jumpToEnd: PropTypes.bool.isRequired,
-    jumpToStart: PropTypes.bool.isRequired,
+    jumpToEnd: PropTypes.func.isRequired,
+    jumpToStart: PropTypes.func.isRequired,
     stepBack: PropTypes.func.isRequired,
     stepForward: PropTypes.func.isRequired
   };
@@ -100,16 +100,28 @@ export class Application extends Component {
 
 // Initialize store with default data
 const store = new ImmutableStore({
+  activeTab: 'all',
   items: [],
   newItemText: ''
 })
 
 // Expose the current state of the store to the "connected" component
 const subscriptions = {
+  activeTab: ['activeTab'],
   hasNext: () => store.hasNext(),
   hasPrevious: () => store.hasPrevious(),
-  newItemText: ['newItemText'],
-  items: ['items']
+  filteredItems: (state) => {
+    const activeTab = state.get('activeTab')
+    const items = state.get('items')
+
+    return items.filter((item) => (
+      activeTab === 'all' ||
+      (activeTab === 'active' && !item.get('completed')) ||
+      (activeTab === 'completed' && item.get('completed'))
+    ))
+  },
+  items: ['items'],
+  newItemText: ['newItemText']
 }
 
 // Expose updates to the store to the "connected" component
@@ -125,6 +137,9 @@ const actions = {
       store.set('newItemText', '')
     }
   },
+  clearAllItems: () => {
+    store.set('items', Immutable.List())
+  },
   jumpToEnd: () => {
     store.jumpToEnd()
   },
@@ -133,6 +148,9 @@ const actions = {
   },
   removeItemAt: (index) => {
     store.deleteIn(['items', index])
+  },
+  setActiveTab: (tab) => {
+    store.set('activeTab', tab)
   },
   setNewItemText: (text) => {
     store.set('newItemText', text)

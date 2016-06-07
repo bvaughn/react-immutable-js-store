@@ -7,10 +7,14 @@ import styles from './TodoList.css'
 
 export class TodoList extends Component {
   static propTypes = {
+    activeTab: PropTypes.string.isRequired,
     addItem: PropTypes.func.isRequired,
-    newItemText: PropTypes.string.isRequired,
+    clearAllItems: PropTypes.func.isRequired,
+    filteredItems: PropTypes.instanceOf(Immutable.List).isRequired,
     items: PropTypes.instanceOf(Immutable.List).isRequired,
+    newItemText: PropTypes.string.isRequired,
     removeItemAt: PropTypes.func.isRequired,
+    setActiveTab: PropTypes.func.isRequired,
     setNewItemText: PropTypes.func.isRequired,
     toggleAll: PropTypes.func.isRequired,
     toggleItemAt: PropTypes.func.isRequired
@@ -19,8 +23,10 @@ export class TodoList extends Component {
   render () {
     const {
       addItem,
-      newItemText,
+      clearAllItems,
+      filteredItems,
       items,
+      newItemText,
       removeItemAt,
       setNewItemText,
       toggleAll,
@@ -45,9 +51,9 @@ export class TodoList extends Component {
           />
         </section>
 
-        <section className={styles.Section}>
+        <section>
           <ul className={styles.TodoList}>
-            {items.map((item, index) => {
+            {filteredItems.map((item, index) => {
               const completed = item.get('completed')
               const text = item.get('text')
 
@@ -83,7 +89,57 @@ export class TodoList extends Component {
             })}
           </ul>
         </section>
+
+        {items.size > 0 && (
+          <section>
+            <div className={styles.ListFooter}>
+              0 items left
+
+              <div className={styles.FooterButtonsRow}>
+                <FooterButton
+                  {...this.props}
+                  tab='all'
+                />
+                <FooterButton
+                  {...this.props}
+                  tab='active'
+                />
+                <FooterButton
+                  {...this.props}
+                  tab='completed'
+                />
+              </div>
+
+              <button
+                className={styles.FooterButton}
+                disabled={items.size === 0}
+                onClick={clearAllItems}
+              >
+                Clear all
+              </button>
+            </div>
+          </section>
+        )}
       </div>
     )
   }
+}
+
+function FooterButton ({
+  activeTab,
+  setActiveTab,
+  tab
+}) {
+  const className = cn(styles.FooterButton, {
+    [styles.FooterButtonActive]: activeTab === tab
+  })
+
+  return (
+    <button
+      className={className}
+      onClick={() => setActiveTab(tab)}
+    >
+      {tab}
+    </button>
+  )
 }
