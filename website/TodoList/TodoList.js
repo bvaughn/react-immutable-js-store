@@ -93,7 +93,7 @@ export class TodoList extends Component {
         {items.size > 0 && (
           <section>
             <div className={styles.ListFooter}>
-              0 items left
+              {`${items.size} items`}
 
               <div className={styles.FooterButtonsRow}>
                 <FooterButton
