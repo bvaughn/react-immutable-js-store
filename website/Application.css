@@ -96,10 +96,10 @@
   flex: 0 0 auto;
   margin-right: 1rem;
   cursor: pointer;
-  color: #aaa;
+  color: #BDBDBD;
 }
 .ToggledOn {
-  color: #5dc2af;
+  color: #4CAF50;
 }
 
 .Label {
@@ -114,15 +114,19 @@
 }
 .LabelCompleted {
   color: #d9d9d9;
+  text-decoration: line-through;
 }
 
 .DeleteButton {
   flex: 0 0 auto;
   padding: 1rem;
   font-size: 30px;
-  color: #af5b5e;
+  color: #ef5350;
   transition: color 0.2s ease-out;
   cursor: pointer;
+}
+.DeleteButton:hover {
+  color: #b71c1c;
 }
 
 .Footer {
