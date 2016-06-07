@@ -43,3 +43,7 @@ button,
 input[type="checkbox"] {
   outline: none;
 }
+
+a {
+  color: #304FFE;
+}

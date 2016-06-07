@@ -40,7 +40,12 @@ export class Application extends Component {
     return (
       <div className={styles.Application}>
         <h1 className={styles.Header}>
-          immutable-js-store
+          <a
+            className={styles.HeaderLink}
+            href='https://github.com/bvaughn/react-immutable-js-store'
+          >
+            react-immutable-js-store
+          </a>
         </h1>
         <p className={styles.Lead}>
           Todo Mvc app built with <a href='https://github.com/bvaughn/immutable-js-store'>immutable-js-store</a>.
