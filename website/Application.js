@@ -1,40 +1,26 @@
 /** @flow */
-import cn from 'classnames'
 import Immutable from 'immutable'
 import ImmutableStore from 'immutable-js-store'
 import React, { Component, PropTypes } from 'react'
 import { Icon, ICON_TYPE } from './Icon'
+import { TodoList } from './TodoList'
 import { connect } from '../source'
 import styles from './Application.css'
 
 export class Application extends Component {
   static propTypes = {
-    addItem: PropTypes.func.isRequired,
     hasNext: PropTypes.bool.isRequired,
     hasPrevious: PropTypes.bool.isRequired,
-    newItemText: PropTypes.string.isRequired,
-    items: PropTypes.instanceOf(Immutable.List).isRequired,
-    removeItemAt: PropTypes.func.isRequired,
-    setNewItemText: PropTypes.func.isRequired,
     stepBack: PropTypes.func.isRequired,
-    stepForward: PropTypes.func.isRequired,
-    toggleAll: PropTypes.func.isRequired,
-    toggleItemAt: PropTypes.func.isRequired
+    stepForward: PropTypes.func.isRequired
   };
 
   render () {
     const {
-      addItem,
       hasNext,
       hasPrevious,
-      newItemText,
-      items,
-      removeItemAt,
-      setNewItemText,
       stepBack,
-      stepForward,
-      toggleAll,
-      toggleItemAt
+      stepForward
     } = this.props
 
     return (
@@ -70,59 +56,7 @@ export class Application extends Component {
           </button>
         </section>
 
-        <section className={styles.InputContainer}>
-          <div
-            className={styles.ToggleAllButton}
-            onClick={toggleAll}
-          >
-            <Icon type={ICON_TYPE.DOWN_ARROW} />
-          </div>
-          <input
-            className={styles.Input}
-            onChange={({ target }) => setNewItemText(target.value)}
-            onKeyDown={({ key, target }) => key === 'Enter' && addItem(target.value)}
-            placeholder='What needs to be done?'
-            value={newItemText}
-          />
-        </section>
-
-        <section className={styles.Section}>
-          <ul className={styles.TodoList}>
-            {items.map((item, index) => {
-              const completed = item.get('completed')
-
-              const iconClassName = cn(styles.Toggle, {
-                [styles.ToggledOn]: completed
-              })
-              const labelClassName = cn(styles.Label, {
-                [styles.LabelCompleted]: completed
-              })
-
-              return (
-                <li
-                  className={styles.TodoItem}
-                  key={index}
-                >
-                  <div
-                    className={iconClassName}
-                    onClick={() => toggleItemAt(index)}
-                  >
-                    <Icon type={completed ? ICON_TYPE.COMPLETE : ICON_TYPE.INCOMPLETE} />
-                  </div>
-                  <div className={labelClassName}>
-                    {` ${item.get('text')} `}
-                  </div>
-                  <div
-                    className={styles.DeleteButton}
-                    onClick={() => removeItemAt(index)}
-                  >
-                    <Icon type={ICON_TYPE.DELETE} />
-                  </div>
-                </li>
-              )
-            })}
-          </ul>
-        </section>
+        <TodoList {...this.props} />
 
         <footer className={styles.Footer}>
           Created by <a href='https://github.com/bvaughn'>Brian Vaughn</a>.
@@ -191,6 +125,7 @@ const actions = {
   }
 }
 
+// Connect the "dumb" Application component to subscribe to the store for property updates.
 export default connect({
   actions,
   subscriptions,
