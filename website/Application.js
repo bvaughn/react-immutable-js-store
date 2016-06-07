@@ -11,6 +11,8 @@ export class Application extends Component {
   static propTypes = {
     hasNext: PropTypes.bool.isRequired,
     hasPrevious: PropTypes.bool.isRequired,
+    jumpToEnd: PropTypes.bool.isRequired,
+    jumpToStart: PropTypes.bool.isRequired,
     stepBack: PropTypes.func.isRequired,
     stepForward: PropTypes.func.isRequired
   };
@@ -19,6 +21,8 @@ export class Application extends Component {
     const {
       hasNext,
       hasPrevious,
+      jumpToEnd,
+      jumpToStart,
       stepBack,
       stepForward
     } = this.props
@@ -41,9 +45,23 @@ export class Application extends Component {
           <button
             className={styles.TimelineButton}
             disabled={!hasPrevious}
+            onClick={jumpToStart}
+          >
+            <Icon
+              className={styles.TimelineSvg}
+              type={ICON_TYPE.REWIND}
+            />
+            start
+          </button>
+          <button
+            className={styles.TimelineButton}
+            disabled={!hasPrevious}
             onClick={stepBack}
           >
-            <Icon type={ICON_TYPE.UNDO} />
+            <Icon
+              className={styles.TimelineSvg}
+              type={ICON_TYPE.UNDO}
+            />
             undo
           </button>
           <button
@@ -51,8 +69,22 @@ export class Application extends Component {
             disabled={!hasNext}
             onClick={stepForward}
           >
-            <Icon type={ICON_TYPE.REDO} />
+            <Icon
+              className={styles.TimelineSvg}
+              type={ICON_TYPE.REDO}
+            />
             redo
+          </button>
+          <button
+            className={styles.TimelineButton}
+            disabled={!hasNext}
+            onClick={jumpToEnd}
+          >
+            <Icon
+              className={styles.TimelineSvg}
+              type={ICON_TYPE.FAST_FORWARD}
+            />
+            end
           </button>
         </section>
 
@@ -92,6 +124,12 @@ const actions = {
       ))
       store.set('newItemText', '')
     }
+  },
+  jumpToEnd: () => {
+    store.jumpToEnd()
+  },
+  jumpToStart: () => {
+    store.jumpToStart()
   },
   removeItemAt: (index) => {
     store.deleteIn(['items', index])

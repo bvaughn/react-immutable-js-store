@@ -3,8 +3,8 @@
 }
 
 .Header {
-  font-size: 3rem;
-  font-weight: 100;
+  font-size: 2rem;
+  font-weight: normal;
   text-align: center;
   color: rgba(175, 47, 47, 0.15);
   -webkit-text-rendering: optimizeLegibility;
@@ -37,11 +37,14 @@
   opacity: 0.5;
   cursor: auto;
 }
+.TimelineSvg {
+  margin-right: 0.5rem;
+}
 
 .Footer {
   margin: 2rem auto 0;
   color: #bfbfbf;
-  font-size: 10px;
+  font-size: .75rem;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
   text-align: center;
 }

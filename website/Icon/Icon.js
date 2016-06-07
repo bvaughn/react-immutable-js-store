@@ -36,12 +36,16 @@ export class Icon extends Component {
         return <path d='M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z' />
       case ICON_TYPE.DOWN_ARROW:
         return <path d='M7.41 7.84L12 12.42l4.59-4.58L18 9.25l-6 6-6-6z' />
+      case ICON_TYPE.FAST_FORWARD:
+        return <path d='M4 18l8.5-6L4 6v12zm9-12v12l8.5-6L13 6z' />
       case ICON_TYPE.INCOMPLETE:
         return <path d='M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z' />
       case ICON_TYPE.LEFT_ARROW:
         return <path d='M15.41 16.09l-4.58-4.59 4.58-4.59L14 5.5l-6 6 6 6z' />
       case ICON_TYPE.REDO:
         return <path d='M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z' />
+      case ICON_TYPE.REWIND:
+        return <path d='M11 18V6l-8.5 6 8.5 6zm.5-6l8.5 6V6l-8.5 6z' />
       case ICON_TYPE.RIGHT_ARROW:
         return <path d='M8.59 16.34l4.58-4.59-4.58-4.59L10 5.75l6 6-6 6z' />
       case ICON_TYPE.UNDO:
@@ -54,9 +58,11 @@ export const ICON_TYPE = {
   COMPLETE: 'COMPLETE',
   DELETE: 'DELETE',
   DOWN_ARROW: 'DOWN_ARROW',
+  FAST_FORWARD: 'FAST_FORWARD',
   INCOMPLETE: 'INCOMPLETE',
   LEFT_ARROW: 'LEFT_ARROW',
   REDO: 'REDO',
+  REWIND: 'REWIND',
   RIGHT_ARROW: 'RIGHT_ARROW',
   UNDO: 'UNDO'
 }
