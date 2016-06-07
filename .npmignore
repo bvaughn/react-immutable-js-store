@@ -1,5 +1,5 @@
 website
 node_modules
 karma.conf.js
-src
+source
 webpack*

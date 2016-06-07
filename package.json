@@ -17,7 +17,7 @@
     "prepublish": "npm run build",
     "start": "webpack-dev-server --hot --inline --config webpack.config.dev.js",
     "test": "NODE_ENV=test karma start",
-    "watch": "watch 'clear && npm run lint -s && npm run test -s' src"
+    "watch": "watch 'clear && npm run lint -s && npm run test -s' source"
   },
   "repository": {
     "type": "git",

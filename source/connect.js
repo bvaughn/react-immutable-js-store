@@ -5,14 +5,9 @@ import shallowCompare from 'react-addons-shallow-compare'
 export function connect ({
   actions = {},
   component,
-  options = {},
   subscriptions = {},
   store
 }) {
-  const {
-    pure = true
-  } = options
-
   // @TODO invariant for :component and :store
 
   return function wrapWithConnect (WrappedComponent) {
@@ -101,7 +96,7 @@ export function connect ({
       }
 
       shouldComponentUpdate () {
-        return !pure || this.propsHaveChanged || this.stateHasChanged
+        return this.propsHaveChanged || this.stateHasChanged
       }
 
       render () {
