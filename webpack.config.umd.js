@@ -7,13 +7,14 @@ module.exports = {
   ],
   output: {
     path: 'dist',
-    filename: '[name].js',
+    filename: 'index.js',
     libraryTarget: 'commonjs2',
     library: 'react-highlight-words'
   },
   plugins: [
   ],
   externals: {
+    'immutable-js-store': 'immutable-js-store',
     'react': 'react'
   },
   module: {
