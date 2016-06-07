@@ -21,6 +21,11 @@ This function accepts the following named parameters:
 | store | ImmutableStore | ✓ | Store |
 | subscriptions | Object |  | Expose the current state of the store to the connected component |
 
+The subscriptions object can contain 2 types of values:
+
+* Array values will be auto-subscribed and the corresponding property will be updated when the subscription is notified.
+* Keys with Function values will be called each time the store changes; a single parameter (the current state) will be passed.
+
 ### Example
 ```js
 import React, { Component } from 'react'
