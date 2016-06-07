@@ -50,6 +50,24 @@
   color: #e6e6e6;
 }
 
+.Timeline {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.TimelineButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0.5rem;
+  cursor: pointer;
+}
+.TimelineButton[disabled] {
+  opacity: 0.5;
+  cursor: auto;
+}
+
 .Section {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 25px 50px 0 rgba(0, 0, 0, 0.1);
 }

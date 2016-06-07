@@ -10,20 +10,29 @@ import styles from './Application.css'
 export class Application extends Component {
   static propTypes = {
     addItem: PropTypes.func.isRequired,
+    hasNext: PropTypes.bool.isRequired,
+    hasPrevious: PropTypes.bool.isRequired,
     newItemText: PropTypes.string.isRequired,
     items: PropTypes.instanceOf(Immutable.List).isRequired,
     removeItemAt: PropTypes.func.isRequired,
     setNewItemText: PropTypes.func.isRequired,
+    stepBack: PropTypes.func.isRequired,
+    stepForward: PropTypes.func.isRequired,
+    toggleAll: PropTypes.func.isRequired,
     toggleItemAt: PropTypes.func.isRequired
   };
 
   render () {
     const {
       addItem,
+      hasNext,
+      hasPrevious,
       newItemText,
       items,
       removeItemAt,
       setNewItemText,
+      stepBack,
+      stepForward,
       toggleAll,
       toggleItemAt
     } = this.props
@@ -37,7 +46,26 @@ export class Application extends Component {
           Todo Mvc app built with <a href='https://github.com/bvaughn/immutable-js-store'>immutable-js-store</a>.
         </p>
 
-        <div className={styles.InputContainer}>
+        <section className={styles.Timeline}>
+          <button
+            className={styles.TimelineButton}
+            disabled={!hasPrevious}
+            onClick={stepBack}
+          >
+            <Icon type={ICON_TYPE.UNDO} />
+            undo
+          </button>
+          <button
+            className={styles.TimelineButton}
+            disabled={!hasNext}
+            onClick={stepForward}
+          >
+            <Icon type={ICON_TYPE.REDO} />
+            redo
+          </button>
+        </section>
+
+        <section className={styles.InputContainer}>
           <div
             className={styles.ToggleAllButton}
             onClick={toggleAll}
@@ -51,7 +79,7 @@ export class Application extends Component {
             placeholder='What needs to be done?'
             value={newItemText}
           />
-        </div>
+        </section>
 
         <section className={styles.Section}>
           <ul className={styles.TodoList}>
@@ -99,16 +127,21 @@ export class Application extends Component {
   }
 }
 
+// Initialize store with default data
 const store = new ImmutableStore({
   items: [],
   newItemText: ''
 })
 
+// Expose the current state of the store to the "connected" component
 const subscriptions = {
+  hasNext: () => store.hasNext(),
+  hasPrevious: () => store.hasPrevious(),
   newItemText: ['newItemText'],
   items: ['items']
 }
 
+// Expose updates to the store to the "connected" component
 const actions = {
   addItem: (text) => {
     if (text) {
@@ -126,6 +159,12 @@ const actions = {
   },
   setNewItemText: (text) => {
     store.set('newItemText', text)
+  },
+  stepBack: () => {
+    store.stepBack()
+  },
+  stepForward: () => {
+    store.stepForward()
   },
   toggleAll: () => {
     const items = store.get('items')

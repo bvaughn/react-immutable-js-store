@@ -31,24 +31,61 @@ export function connect ({
       }
 
       componentWillMount () {
+        const hooks = []
+        const initialState = {}
+
         Object.keys(subscriptions).forEach(
           (key) => {
-            const path = subscriptions[key]
+            const pathOrFunction = subscriptions[key]
 
-            this.setState({
-              [path]: store.getIn(path)
-            })
+            let value
 
-            const unsubscribe = store.subscribeIn(path, (value) => {
-              this.stateHasChanged = true
-              this.setState({
-                [path]: value
+            // Array properties should be setup as subscribers to auto-update their keys.
+            // Callbacks (functions) should be triggered by a single, root subscription.
+            // All other values are assumed to be static for now.
+            if (Array.isArray(pathOrFunction)) {
+              value = store.getIn(pathOrFunction)
+
+              const unsubscribe = store.subscribeIn(pathOrFunction, (value) => {
+                this.stateHasChanged = true
+                this.setState({
+                  [key]: value
+                })
               })
-            })
 
-            unsubscribes.push(unsubscribe)
+              unsubscribes.push(unsubscribe)
+            } else if (typeof pathOrFunction === 'function') {
+              value = pathOrFunction(store.getState())
+
+              hooks.push({
+                callback: pathOrFunction,
+                key
+              })
+            } else {
+              value = pathOrFunction
+            }
+
+            initialState[key] = value
           }
         )
+
+        if (hooks.length) {
+          const unsubscribe = store.subscribe(
+            (state) => {
+              const stateUpdates = {}
+
+              hooks.forEach((hook) => {
+                stateUpdates[hook.key] = hook.callback(state)
+              })
+
+              this.setState(stateUpdates)
+            }
+          )
+
+          unsubscribes.push(unsubscribe)
+        }
+
+        this.setState(initialState)
       }
 
       componentWillUnmount () {
